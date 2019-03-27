@@ -15,6 +15,8 @@ https://console.developers.google.com/apis/dashboard
 3.download and rename to credentials.json and place it in main folder
 
 ## To-do 
-- implement resumable uploads
-- implement filters using regex for batch uploads
+- implement resumable uploads(done)
+- implement filters using regex for batch uploads(done)
 - implement gui 
+- implement folder creation
+- create search function before upload to avoid redundant uploads
