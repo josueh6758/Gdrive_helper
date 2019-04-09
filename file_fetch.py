@@ -26,12 +26,19 @@ def retrieve_files(name_list,extension):
         paths[temp] = name
     return paths
 
-def list_all():
+def list_all(path = None):
     """
     fetches all local files and returns a list of all paths.
     Used for additional methods in the module
     """
     files = []
+    #can take in another directory if needed
+    if path:
+        for object in os.scandir(path):
+            if object.is_file():
+                files.append(object.path)
+        return files
+    #if no input is placed then the default will be current directory
     for object in os.scandir(path2):
         if object.is_file():
             files.append(object.path)

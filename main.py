@@ -18,8 +18,15 @@ creds = authInst.get_cred()
 drive_service = build('drive', 'v3', credentials=creds)
 MIMETYPES = {"zip":"application/zip","png":"image/png","jpg":"image/jpeg","pdf":"application/pdf"}
 
-def upload_file(file_name,file_path,mimetype):
-    file_metadata = {'name': file_name}
+def upload_file(file_name,file_path,mimetype,folder_id=None):
+    """uploads a single file to the main directory in your gdrive"""
+    #if theres a folder you want to put it in do 1st else goes to main
+    if folder_id:
+        file_metadata = {'name': file_name,
+                      'parents': [folder_id]}
+    else:
+        file_metadata = {'name': file_name}
+
     media =  MediaFileUpload(file_path,
                             mimetype=mimetype)
     try:
@@ -29,6 +36,15 @@ def upload_file(file_name,file_path,mimetype):
         print('File ID: %s' % file.get('name'), "Id: ", file.get('id'))
     except:
         print("Uh-Oh Program did an OOPSIE and could not upload file")
+
+def create_folder(name):
+    file_metadata = {
+        'name': name,
+        'mimeType': 'application/vnd.google-apps.folder'
+    }
+    file = drive_service.files().create(body=file_metadata,
+                                        fields='id').execute()
+    print('Folder ID: %s' % file.get('id'))
 
 
 def list_files(size):
@@ -58,8 +74,7 @@ def main():
     while len(results) is not 0:
         tup = results.popitem()
         print("Uploading: ", tup[0])
-        upload_file(tup[0],tup[1],MIMETYPES[extension])
-
+        upload_file(tup[0],tup[1],MIMETYPES[extension],'1ugr4OONDtGTEHS3k2KPf8zRfpHlYiZNH')
 
 if __name__ == '__main__':
     main()
