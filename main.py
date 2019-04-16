@@ -1,13 +1,9 @@
 from __future__ import print_function
-import pickle
-import os.path
+
 from googleapiclient.discovery import build
-from google_auth_oauthlib.flow import InstalledAppFlow
-from google.auth.transport.requests import Request
 import auth
-#im not sure why it gives me unresolved reference for mediafileupload but it still works
-from apiclient.http import MediaFileUpload
-import file_fetch
+import file_handler
+from googleapiclient.http import MediaFileUpload
 
 
 # If modifying these scopes, delete the file token.pickle.
@@ -27,8 +23,7 @@ def upload_file(file_name,file_path,mimetype,folder_id=None):
     else:
         file_metadata = {'name': file_name}
 
-    media =  MediaFileUpload(file_path,
-                            mimetype=mimetype)
+    media =  MediaFileUpload(file_path,mimetype=mimetype,resumable=True)
     try:
         file = drive_service.files().create(body=file_metadata,
                                             media_body=media,
@@ -64,17 +59,18 @@ def list_files(size):
 
 def main():
     #gets all files in current directory
-    files = file_fetch.list_all()
+    files = file_handler.list_all('C:\\Users\\esejj\\Documents\\Textbooks')
+    print(files)
     extension = input("please input extension type, ie. pdf\n")
 
-    results = file_fetch.retrieve_files(files,extension)
+    results = file_handler.retrieve_files(files, extension)
     print(files)
     print(results)
 
-    while len(results) is not 0:
-        tup = results.popitem()
-        print("Uploading: ", tup[0])
-        upload_file(tup[0],tup[1],MIMETYPES[extension],'1ugr4OONDtGTEHS3k2KPf8zRfpHlYiZNH')
+    # while len(results) is not 0:
+    #     tup = results.popitem()
+    #     print("Uploading: ", tup[0])
+    #     upload_file(tup[0],tup[1],MIMETYPES[extension],'1ugr4OONDtGTEHS3k2KPf8zRfpHlYiZNH')
 
 if __name__ == '__main__':
     main()

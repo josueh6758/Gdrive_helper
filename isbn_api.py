@@ -17,21 +17,23 @@ def get_info(isbn):
         results.append(jfile['items'][0]['volumeInfo']['title'])
         results.append(jfile['items'][0]['volumeInfo']['authors'][0])
     except KeyError as keyerr:
-        print("Error with retrieving book info")
-        results.append('N/A')
+        print("No Info for:"+isbn)
     return results
 
 def find_isbn(file_name):
+    """Conducts google search based on file name and returns possible info"""
     query = file_name
     #first part get links from google search using book names
     hits = []
     for link in search(query, tld='com', lang='en', num=10, start=0, stop=10, pause=2.0):
         hits.append(link)
     print(hits)
+
     #filter that using regex and get only amazon links
     regs = '(.*)amazon.com(.*)'
     r = re.compile(regs, re.IGNORECASE)
     results = list(filter(r.match,hits))
+
     #isbns are at the end of the link just get that
     lookups = {}
     for name in results:
@@ -41,6 +43,13 @@ def find_isbn(file_name):
             temp += char
         temp = "".join(reversed(temp))
         lookups[temp] = get_info(temp)
-    print(lookups)
 
-find_isbn('introduction to automata')
+    #select correct info and return that part of list
+    selector = {i:f for i,f in enumerate(lookups.items())}
+    for object in selector: print(object,":",selector[object])#dict comprehension!
+    key = int(input("select correct info\n"))
+    # returns only the title and author remove [1] for isbn too
+    return selector[key][1]
+
+
+# print(info)
