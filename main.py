@@ -13,6 +13,7 @@ authInst = auth.auth(SCOPES)
 creds = authInst.get_cred()
 drive_service = build('drive', 'v3', credentials=creds)
 MIMETYPES = {"zip":"application/zip","png":"image/png","jpg":"image/jpeg","pdf":"application/pdf"}
+DIR='C:\\Users\\esejj\\Documents\\Textbooks'
 
 def upload_file(file_name,file_path,mimetype,folder_id=None):
     """uploads a single file to the main directory in your gdrive"""
@@ -30,7 +31,7 @@ def upload_file(file_name,file_path,mimetype,folder_id=None):
                                             fields='name, id').execute()
         print('File ID: %s' % file.get('name'), "Id: ", file.get('id'))
     except:
-        print("Uh-Oh Program did an OOPSIE and could not upload file")
+        print("Uh-Oh Program could not upload file")
 
 def create_folder(name):
     file_metadata = {
@@ -59,13 +60,14 @@ def list_files(size):
 
 def main():
     #gets all files in current directory
-    files = file_handler.list_all('C:\\Users\\esejj\\Documents\\Textbooks')
+    files = file_handler.list_all(DIR)
     print(files)
     extension = input("please input extension type, ie. pdf\n")
 
     results = file_handler.retrieve_files(files, extension)
     print(files)
     print(results)
+    file_handler.pdf_clean(results)
 
     # while len(results) is not 0:
     #     tup = results.popitem()

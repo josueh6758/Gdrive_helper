@@ -27,7 +27,7 @@ def find_isbn(file_name):
     hits = []
     for link in search(query, tld='com', lang='en', num=10, start=0, stop=10, pause=2.0):
         hits.append(link)
-    print(hits)
+    # print(hits)
 
     #filter that using regex and get only amazon links
     regs = '(.*)amazon.com(.*)'
@@ -47,7 +47,11 @@ def find_isbn(file_name):
     #select correct info and return that part of list
     selector = {i:f for i,f in enumerate(lookups.items())}
     for object in selector: print(object,":",selector[object])#dict comprehension!
-    key = int(input("select correct info\n"))
+    #If there are incorrect results we dont want to change anything
+    try:
+        key = int(input("select correct info\nPress enter if none of the results are valid\n"))
+    except ValueError as empty:
+        return []
     # returns only the title and author remove [1] for isbn too
     return selector[key][1]
 
