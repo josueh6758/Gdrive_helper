@@ -13,6 +13,7 @@ def get_info(isbn):
     except:
         print("couldnt reach the host")
         exit()
+
     try:
         results.append(jfile['items'][0]['volumeInfo']['title'])
         results.append(jfile['items'][0]['volumeInfo']['authors'][0])
@@ -27,7 +28,7 @@ def find_isbn(file_name):
     hits = []
     for link in search(query, tld='com', lang='en', num=10, start=0, stop=10, pause=2.0):
         hits.append(link)
-    # print(hits)
+
 
     #filter that using regex and get only amazon links
     regs = '(.*)amazon.com(.*)'

@@ -65,14 +65,13 @@ def main():
     extension = input("please input extension type, ie. pdf\n")
 
     results = file_handler.retrieve_files(files, extension)
-    print(files)
-    print(results)
     file_handler.pdf_clean(results)
+    results = file_handler.retrieve_files(files,extension)
 
-    # while len(results) is not 0:
-    #     tup = results.popitem()
-    #     print("Uploading: ", tup[0])
-    #     upload_file(tup[0],tup[1],MIMETYPES[extension],'1ugr4OONDtGTEHS3k2KPf8zRfpHlYiZNH')
+    while len(results) is not 0:
+        tup = results.popitem()
+        print("Uploading: ", tup[0])
+        upload_file(tup[0],tup[1],MIMETYPES[extension],'1ugr4OONDtGTEHS3k2KPf8zRfpHlYiZNH')
 
 if __name__ == '__main__':
     main()
